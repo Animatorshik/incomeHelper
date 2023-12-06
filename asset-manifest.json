@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/incomeHelper/static/css/main.3a1a02e8.css",
+    "main.js": "/incomeHelper/static/js/main.90f5ed6b.js",
+    "index.html": "/incomeHelper/index.html",
+    "main.3a1a02e8.css.map": "/incomeHelper/static/css/main.3a1a02e8.css.map",
+    "main.90f5ed6b.js.map": "/incomeHelper/static/js/main.90f5ed6b.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.3a1a02e8.css",
+    "static/js/main.90f5ed6b.js"
+  ]
+}
