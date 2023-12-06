@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 import { selectRecords } from '../features/records/recordsSlice';
 import Record from './Record';
 import Limits from './Limits';
+import Trend from './Trend';
 
 import {
     Paper,
@@ -15,6 +16,9 @@ import {
     TableHead,
     TableRow,
     IconButton,
+    FormGroup,
+    FormControlLabel,
+    Switch,
 } from '@mui/material';
 import {
     KeyboardArrowDown,
@@ -33,6 +37,10 @@ type TShowByMonth = {
     [key: string]: boolean,
 }
 
+type TPreviousDate = string;
+
+const lsKeyShowTrends = 'showTrends';
+
 const filteredRecords = (records: TRecord[]) => {
     return [...records].sort((a, b) => b.date - a.date);
 };
@@ -49,10 +57,23 @@ const splitRecordsBy = (records, format: TSplitFormat) => {
     }, {});
 };
 
-const getSumForRecords = (records: TRecord[]) => {
+const getSumForRecords = (records: TRecord[]): number => {
     let result = 0;
     records.map((record) => result = result + record.pricePln);
-    return result.toFixed(2);
+    return Number(result.toFixed(2));
+};
+
+const getPreviousDate = (dates: string[], date: string): TPreviousDate => {
+    const dateKey = Number(Object.keys(dates).find(key => dates[key] === date));
+    if (isNaN(dateKey)) {
+        return date;
+    }
+
+    if (dateKey < dates.length - 1) {
+        return dates[dateKey + 1];
+    }
+
+    return date;
 };
 
 export default function Records() {
@@ -60,6 +81,17 @@ export default function Records() {
     const [recordsByMonth, setRecordsByMonth] = useState<TSortedRecords>({});
     const [recordsByYear, setRecordsByYear] = useState<TSortedRecords>({});
     const [showByMonth, setShowByMonth] = useState<TShowByMonth>({});
+    const [dates, setDates] = useState<string[]>([]);
+    const [showTrends, setShowTrends] = useState<boolean>(false);
+
+    useEffect(() => {
+        const lsShowTrends = localStorage.getItem(lsKeyShowTrends);
+        if (lsShowTrends === 'true') {
+            setShowTrends(true);
+        } else {
+            setShowTrends(false);
+        }
+    }, []);
 
     useEffect(() => {
         setRecordsByMonth(splitRecordsBy(records, 'YYYY-MM'));
@@ -70,6 +102,7 @@ export default function Records() {
         if (Object.keys(showByMonth).length === 0) {
             const newShowByMonth = {};
             const keysArray = Object.keys(recordsByMonth);
+            setDates(keysArray);
     
             keysArray.map((key) => {
                 newShowByMonth[key] = false;
@@ -84,6 +117,13 @@ export default function Records() {
         const newShowByMonth = { ...showByMonth };
         newShowByMonth[key] = !newShowByMonth[key];
         setShowByMonth(newShowByMonth);
+    };
+
+    const handleTrendsShow = () => {
+        setShowTrends((prev) => {
+            localStorage.setItem(lsKeyShowTrends, String(!prev));
+            return !prev;
+        });
     };
 
     return (
@@ -108,6 +148,13 @@ export default function Records() {
                                 <span className='text-slate-500 ml-5 lowercase text-sm'>
                                     {getSumForRecords(recordsByMonth[key])} zł
                                 </span>
+                                {showTrends &&
+                                    <span className='text-slate-500 ml-2 lowercase text-xs'>
+                                        <Trend
+                                            current={getSumForRecords(recordsByMonth[key])}
+                                            previous={getSumForRecords(recordsByMonth[getPreviousDate(dates, key)])}
+                                            down={true} />
+                                    </span>}
                             </div>
                         )
                     }
@@ -165,6 +212,15 @@ export default function Records() {
                     ))}
                 </div>
             }
+
+            <div className='px-4 py-2.5 my-20 border-solid border-2 border-slate-50 rounded-md'>
+                <div className='font-medium mb-3'>Настройки</div>
+                <FormGroup>
+                    <FormControlLabel control={
+                        <Switch checked={showTrends} onChange={handleTrendsShow} />
+                    } label='Тренды' />
+                </FormGroup>
+            </div>
         </>
     );
 }
