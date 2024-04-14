@@ -58,6 +58,7 @@ const splitRecordsBy = (records, format: TSplitFormat) => {
 };
 
 const getSumForRecords = (records: TRecord[]): number => {
+    console.log(records);
     let result = 0;
     records.map((record) => result = result + record.pricePln);
     return Number(result.toFixed(2));
@@ -103,12 +104,12 @@ export default function Records() {
             const newShowByMonth = {};
             const keysArray = Object.keys(recordsByMonth);
             setDates(keysArray);
-    
+
             keysArray.map((key) => {
                 newShowByMonth[key] = false;
                 return false;
             });
-    
+
             setShowByMonth(newShowByMonth);
         }
     }, [recordsByMonth]);
@@ -203,11 +204,19 @@ export default function Records() {
                 <div className='mt-20 mb-5'>
                     <div className='font-medium mb-3'>Итоги по годам</div>
                     {recordsByYear && Object.keys(recordsByYear).reverse().map((key) => (
-                        <div key={key} className='py-1'>
+                        <div key={key} className='py-3'>
                             {key}
-                            <span className='text-slate-500 ml-5 lowercase'>
+                            <span className='font-medium ml-5'>
                                 {getSumForRecords(recordsByYear[key])} zł
                             </span>
+                            <div>
+                                <span className='text-slate-600 text-sm'>
+                                    Лена: {getSumForRecords(recordsByYear[key].filter((item) => item.reciever === 0))} zł
+                                </span>
+                                <span className='text-slate-600 text-sm ml-5'>
+                                    Влад: {getSumForRecords(recordsByYear[key].filter((item) => item.reciever === 1))} zł
+                                </span>
+                            </div>
                         </div>
                     ))}
                 </div>
@@ -217,7 +226,7 @@ export default function Records() {
                 <div className='font-medium mb-3'>Настройки</div>
                 <FormGroup>
                     <FormControlLabel control={
-                        <Switch checked={showTrends} onChange={handleTrendsShow} />
+                        <Switch checked={showTrends} onChange={handleTrendsShow}/>
                     } label='Тренды' />
                 </FormGroup>
             </div>
