@@ -4,6 +4,7 @@ import dayjs from 'dayjs';
 
 import { removeRecord } from '../features/records/recordsSlice';
 import { currencyCodes } from '../helpers/currencyCodes';
+import { currencyFormat } from '../helpers/currencyFormat';
 
 import {
     Button,
@@ -43,7 +44,7 @@ const Record = ({ id, price, currency, client, date, reciever, pricePln, exchang
             <TableCell>{client}</TableCell>
             <TableCell>{dayjs.unix(date).format('DD.MM.YYYY')}</TableCell>
             <TableCell>{reciever === 0 ? 'Лена' : 'Влад'}</TableCell>
-            <TableCell>≈ {pricePln.toFixed(2)} zł</TableCell>
+            <TableCell>≈ {currencyFormat(pricePln)}</TableCell>
             <TableCell>
                 {exchangeRate ? exchangeRate : '-'}
                 {exchangeRate ? <div className='text-xs text-slate-400'>от {courseDay()}</div> : ''}
