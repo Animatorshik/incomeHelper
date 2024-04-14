@@ -58,7 +58,6 @@ const splitRecordsBy = (records, format: TSplitFormat) => {
 };
 
 const getSumForRecords = (records: TRecord[]): number => {
-    console.log(records);
     let result = 0;
     records.map((record) => result = result + record.pricePln);
     return Number(result.toFixed(2));
