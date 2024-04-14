@@ -3,6 +3,7 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
 
 import { getExchangeRateApi } from '../api/api';
+import { currencyFormat } from '../helpers/currencyFormat';
 
 import { TRecord } from '../types/records';
 
@@ -58,16 +59,16 @@ export default function Limits({ records }: TRecordsEchange) {
             <div className='capitalize font-medium text-lg'>{dayjs().format('MMMM YYYY')}</div>
             <div className='text-sm text-slate-600 mt-4 mb-1'>Остаток лимита:</div>
             <div className='font-medium text-lg text-slate-600'>
-                <span>Лена:</span> <span className='text-black'>{lenaLimit.toFixed(2)} zł</span> ≈ <span
+                <span>Лена:</span> <span className='text-black'>{currencyFormat(lenaLimit)}</span> ≈ <span
                     className='text-sky-600'>{Math.trunc(lenaLimit / euroCourse)} €</span> ≈ <span
                     className='text-rose-600'>{Math.trunc(lenaLimit / usdCourse)} $</span>
             </div>
             <div className='font-medium text-lg text-slate-600'>
-                <span>Влад:</span> <span className='text-black'>{vladLimit.toFixed(2)} zł</span> ≈ <span
+                <span>Влад:</span> <span className='text-black'>{currencyFormat(vladLimit)}</span> ≈ <span
                     className='text-sky-600'>{Math.trunc(vladLimit / euroCourse)} €</span> ≈ <span
                     className='text-rose-600'>{Math.trunc(vladLimit / usdCourse)} $</span>
             </div>
-            <div className='text-xs text-slate-400 mt-7'>Лимит в месяц: {limitZl} zł
+            <div className='text-xs text-slate-400 mt-7'>Лимит в месяц: {currencyFormat(limitZl)}&nbsp;
                 ≈ {Math.trunc(limitZl / euroCourse)} €
                 ≈ {Math.trunc(limitZl / usdCourse)} $
             </div>

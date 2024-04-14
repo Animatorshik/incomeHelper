@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 
 import { selectRecords } from '../features/records/recordsSlice';
+import { currencyFormat } from '../helpers/currencyFormat';
 import Record from './Record';
 import Limits from './Limits';
 import Trend from './Trend';
@@ -146,7 +147,7 @@ export default function Records() {
                                     {dayjs(key).format('MMMM YYYY')}
                                 </span>
                                 <span className='text-slate-500 ml-5 lowercase text-sm'>
-                                    {getSumForRecords(recordsByMonth[key])} zł
+                                    {currencyFormat(getSumForRecords(recordsByMonth[key]))}
                                 </span>
                                 {showTrends &&
                                     <span className='text-slate-500 ml-2 lowercase text-xs'>
@@ -206,14 +207,14 @@ export default function Records() {
                         <div key={key} className='py-3'>
                             {key}
                             <span className='font-medium ml-5'>
-                                {getSumForRecords(recordsByYear[key])} zł
+                                {currencyFormat(getSumForRecords(recordsByYear[key]))}
                             </span>
                             <div>
                                 <span className='text-slate-600 text-sm'>
-                                    Лена: {getSumForRecords(recordsByYear[key].filter((item) => item.reciever === 0))} zł
+                                    Лена: {currencyFormat(getSumForRecords(recordsByYear[key].filter((item) => item.reciever === 0)))}
                                 </span>
                                 <span className='text-slate-600 text-sm ml-5'>
-                                    Влад: {getSumForRecords(recordsByYear[key].filter((item) => item.reciever === 1))} zł
+                                    Влад: {currencyFormat(getSumForRecords(recordsByYear[key].filter((item) => item.reciever === 1)))}
                                 </span>
                             </div>
                         </div>
