@@ -166,7 +166,7 @@ export default function Records() {
                                 <TableHead>
                                     <TableRow>
                                         <TableCell>
-                                            <div className='w-20 md:w-32 leading-5'>Сумма перевода</div>
+                                            <div className='w-20 md:w-32 leading-5'>Сумма</div>
                                         </TableCell>
                                         <TableCell>
                                             <div className='w-20 leading-5'>От кого</div>
