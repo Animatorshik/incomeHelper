@@ -13,7 +13,7 @@ type TRecordsEchange = {
 
 dayjs.locale('ru');
 
-const limitZl = 3600 * 0.75 * 2;
+const limitZl = Number(process.env.REACT_APP_LIMIT) * 0.75 * 2;
 
 export default function Limits({ records }: TRecordsEchange) {
     const [euroCourse, setEuroCourse] = useState(1);
