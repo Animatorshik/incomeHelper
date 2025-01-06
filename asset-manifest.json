@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/incomeHelper/static/css/main.d6dbe1c6.css",
-    "main.js": "/incomeHelper/static/js/main.c958f494.js",
+    "main.css": "/incomeHelper/static/css/main.ced2ce0c.css",
+    "main.js": "/incomeHelper/static/js/main.df8a309c.js",
     "index.html": "/incomeHelper/index.html",
-    "main.d6dbe1c6.css.map": "/incomeHelper/static/css/main.d6dbe1c6.css.map",
-    "main.c958f494.js.map": "/incomeHelper/static/js/main.c958f494.js.map"
+    "main.ced2ce0c.css.map": "/incomeHelper/static/css/main.ced2ce0c.css.map",
+    "main.df8a309c.js.map": "/incomeHelper/static/js/main.df8a309c.js.map"
   },
   "entrypoints": [
-    "static/css/main.d6dbe1c6.css",
-    "static/js/main.c958f494.js"
+    "static/css/main.ced2ce0c.css",
+    "static/js/main.df8a309c.js"
   ]
 }
