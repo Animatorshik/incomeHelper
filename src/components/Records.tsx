@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
+import quarterOfYear from 'dayjs/plugin/quarterOfYear';
 
 import { selectRecords } from '../features/records/recordsSlice';
 import { currencyFormat } from '../helpers/currencyFormat';
@@ -28,11 +29,14 @@ import {
 
 import { TRecord } from '../types/records';
 
+dayjs.extend(quarterOfYear);
+
 type TSortedRecords = {
     [key: string]: TRecord[],
 }
 
-type TSplitFormat = 'YYYY' | 'YYYY-MM'
+// type TSplitFormat = 'YYYY' | 'YYYY-MM'
+type TSplitFormat = 'year' | 'quarter' | 'month'
 
 type TShowByMonth = {
     [key: string]: boolean,
@@ -40,15 +44,33 @@ type TShowByMonth = {
 
 type TPreviousDate = string;
 
+const isQuarter = process.env.REACT_APP_LIMIT_BY_QUARTER === '1';
 const lsKeyShowTrends = 'showTrends';
+
+const currentYearMonth = dayjs().format('YYYY-MM');
+const currentYearQuarter = `${dayjs().format('YYYY')}-Q${dayjs().quarter()}`;
 
 const filteredRecords = (records: TRecord[]) => {
     return [...records].sort((a, b) => b.date - a.date);
 };
 
-const splitRecordsBy = (records, format: TSplitFormat) => {
+const splitRecordsBy = (records, by: TSplitFormat) => {
     return filteredRecords(records).reduce((acc, obj) => {
-        const key = dayjs.unix(obj.date).format(format);
+        let key = '';
+
+        switch (by) {
+        case 'month':
+            key = dayjs.unix(obj.date).format('YYYY-MM');
+            break;
+        case 'quarter':
+            key = `${dayjs.unix(obj.date).format('YYYY')}-Q${dayjs.unix(obj.date).quarter()}`;
+            break;
+        case 'year':
+            key = dayjs.unix(obj.date).format('YYYY');
+            break;
+        default:
+            break;
+        }
 
         // Create a new array for the key if it does not exist
         const newArray = (acc[key] || []).concat(obj);
@@ -80,6 +102,7 @@ const getPreviousDate = (dates: string[], date: string): TPreviousDate => {
 export default function Records() {
     const records = useSelector<TRecord[]>(selectRecords);
     const [recordsByMonth, setRecordsByMonth] = useState<TSortedRecords>({});
+    const [recordsByQuarter, setRecordsByQuarter] = useState<TSortedRecords>({});
     const [recordsByYear, setRecordsByYear] = useState<TSortedRecords>({});
     const [showByMonth, setShowByMonth] = useState<TShowByMonth>({});
     const [dates, setDates] = useState<string[]>([]);
@@ -95,8 +118,9 @@ export default function Records() {
     }, []);
 
     useEffect(() => {
-        setRecordsByMonth(splitRecordsBy(records, 'YYYY-MM'));
-        setRecordsByYear(splitRecordsBy(records, 'YYYY'));
+        setRecordsByMonth(splitRecordsBy(records, 'month'));
+        setRecordsByQuarter(splitRecordsBy(records, 'quarter'));
+        setRecordsByYear(splitRecordsBy(records, 'year'));
     }, [records]);
 
     useEffect(() => {
@@ -129,73 +153,84 @@ export default function Records() {
 
     return (
         <>
+            {!isQuarter && recordsByMonth && Object.keys(recordsByMonth).map((key) => (
+                <div key={key} className='mt-0'>
+                    {currentYearMonth === key &&
+                        <Limits key={key} records={recordsByMonth[key]} />
+                    }
+                </div>
+            ))}
+
+            {isQuarter && recordsByQuarter && Object.keys(recordsByQuarter).map((key) => (
+                <div key={key} className='mt-0'>
+                    {currentYearQuarter === key &&
+                        <Limits key={key} records={recordsByQuarter[key]} />
+                    }
+                </div>
+            ))}
+
             {recordsByMonth && Object.keys(recordsByMonth).map((key) => (
                 <div key={key} className='mt-0'>
-                    {dayjs().format('YYYY-MM') === key
-                        ? (
-                            <Limits records={recordsByMonth[key]}/>
-                        )
-                        : (
-                            <div className='capitalize font-medium py-2'>
-                                <IconButton onClick={() => toggleMonth(key)}>
-                                    {showByMonth[key]
-                                        ? <KeyboardArrowUp />
-                                        : <KeyboardArrowDown />
-                                    }
-                                </IconButton>
-                                <span className='ml-2'>
-                                    {dayjs(key).format('MMMM YYYY')}
-                                </span>
-                                <span className='text-slate-500 ml-5 lowercase text-sm'>
-                                    {currencyFormat(getSumForRecords(recordsByMonth[key]))}
-                                </span>
-                                {showTrends &&
-                                    <span className='text-slate-500 ml-2 lowercase text-xs'>
-                                        <Trend
-                                            current={getSumForRecords(recordsByMonth[key])}
-                                            previous={getSumForRecords(recordsByMonth[getPreviousDate(dates, key)])}
-                                            down={true} />
-                                    </span>}
-                            </div>
-                        )
+                    {currentYearMonth !== key &&
+                        <div className='capitalize font-medium py-2'>
+                            <IconButton onClick={() => toggleMonth(key)}>
+                                {showByMonth[key]
+                                    ? <KeyboardArrowUp />
+                                    : <KeyboardArrowDown />
+                                }
+                            </IconButton>
+                            <span className='ml-2'>
+                                {dayjs(key).format('MMMM YYYY')}
+                            </span>
+                            <span className='text-slate-500 ml-5 lowercase text-sm'>
+                                {currencyFormat(getSumForRecords(recordsByMonth[key]))}
+                            </span>
+                            {showTrends &&
+                                <span className='text-slate-500 ml-2 lowercase text-xs'>
+                                    <Trend
+                                        current={getSumForRecords(recordsByMonth[key])}
+                                        previous={getSumForRecords(recordsByMonth[getPreviousDate(dates, key)])}
+                                        down={true} />
+                                </span>}
+                        </div>
                     }
-                    {(dayjs().format('YYYY-MM') === key || showByMonth[key]) &&
-                    <div className='mb-10'>
-                        <TableContainer component={Paper}>
-                            <Table size="small" aria-label="a dense table">
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell>
-                                            <div className='w-20 md:w-32 leading-5'>Сумма перевода</div>
-                                        </TableCell>
-                                        <TableCell>
-                                            <div className='w-20 leading-5'>От кого</div>
-                                        </TableCell>
-                                        <TableCell>
-                                            <div className='w-20 leading-5'>Дата</div>
-                                        </TableCell>
-                                        <TableCell>
-                                            <div className='w-20 leading-5'>Получатель</div>
-                                        </TableCell>
-                                        <TableCell>
-                                            <div className='w-20 leading-5'>Сумма в zł</div>
-                                        </TableCell>
-                                        <TableCell>
-                                            <div className='w-20 leading-5'>Курс</div>
-                                        </TableCell>
-                                        <TableCell align='right'>
-                                            <div className='w-16 leading-5'>Действие</div>
-                                        </TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {recordsByMonth[key].map((record) => (
-                                        <Record key={record.id} {...record} />
-                                    ))}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
-                    </div>
+                    {(currentYearMonth === key || showByMonth[key]) &&
+                        <div className='mb-10'>
+                            <TableContainer component={Paper}>
+                                <Table size="small" aria-label="a dense table">
+                                    <TableHead>
+                                        <TableRow>
+                                            <TableCell>
+                                                <div className='w-20 md:w-32 leading-5'>Сумма</div>
+                                            </TableCell>
+                                            <TableCell>
+                                                <div className='w-20 leading-5'>От кого</div>
+                                            </TableCell>
+                                            <TableCell>
+                                                <div className='w-20 leading-5'>Дата</div>
+                                            </TableCell>
+                                            <TableCell>
+                                                <div className='w-20 leading-5'>Получатель</div>
+                                            </TableCell>
+                                            <TableCell>
+                                                <div className='w-20 leading-5'>Сумма в zł</div>
+                                            </TableCell>
+                                            <TableCell>
+                                                <div className='w-20 leading-5'>Курс</div>
+                                            </TableCell>
+                                            <TableCell align='right'>
+                                                <div className='w-16 leading-5'>Действие</div>
+                                            </TableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                        {recordsByMonth[key].map((record) => (
+                                            <Record key={record.id} {...record} />
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
+                        </div>
                     }
                 </div>
             ))}

@@ -1,4 +1,4 @@
-import axios, { isCancel, AxiosError } from 'axios';
+import axios from 'axios';
 import dayjs from 'dayjs';
 
 import { TCurrency } from '../types/currencies';

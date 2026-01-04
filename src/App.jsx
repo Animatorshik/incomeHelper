@@ -2,18 +2,18 @@ import React from 'react';
 
 import IncomeForm from './components/IncomeForm';
 import Records from './components/Records';
-import Download from './components/Download';
 import Restore from './components/Restore';
 import RefreshPage from './components/RefreshPage';
+import Backup from './components/Backup';
 
 export default function App() {
     return (
         <>
             <div className='flex justify-between p-3'>
                 <Restore/>
-                <Download/>
+                <Backup/>
             </div>
-            <div className='container max-w-4xl mx-auto my-10 md:my-24 px-5'>
+            <div className='container max-w-4xl mx-auto my-8 md:my-20 px-5'>
                 <IncomeForm/>
                 <Records/>
             </div>
