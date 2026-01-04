@@ -90,10 +90,10 @@ export default function Limits({ records }: TRecordsEchange) {
             {isQuarter &&
                 <div>
                     <span className='font-medium text-xl'>{quarterTitle}</span>&nbsp;
-                    <span className='text-xs text-slate-400'>({quarterSubtitle})</span>
+                    <span className='text-xs text-slate-600'>({quarterSubtitle})</span>
                 </div>
             }
-            <div className='text-xs text-slate-400'>Лимит в {isQuarter ? 'квартал' : 'месяц'}: {currencyFormat(limitZl)}&nbsp;
+            <div className='text-xs text-slate-600'>Лимит в {isQuarter ? 'квартал' : 'месяц'}: {currencyFormat(limitZl)}&nbsp;
                 ≈ {Math.trunc(limitZl / euroCourse)} €
                 ≈ {Math.trunc(limitZl / usdCourse)} $
             </div>
@@ -110,7 +110,7 @@ export default function Limits({ records }: TRecordsEchange) {
                     className='text-rose-600'>{Math.trunc(vladLimit / usdCourse)} $</span>
             </div>
             <hr className='w-80 h-px mt-1 mb-4 bg-slate-300 border-0 rounded-sm' />
-            <div className='capitalize font-medium text-lg mt-10 mb-2'>{dayjs().format('MMMM YYYY')}</div>
+            <div className='capitalize font-medium text-lg mt-10 mb-3'>{dayjs().format('MMMM YYYY')}</div>
         </div>
     );
 }
