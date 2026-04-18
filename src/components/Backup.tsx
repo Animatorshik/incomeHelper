@@ -64,7 +64,7 @@ export default function Backup() {
             <div className='backup flex flex-col items-end'>
                 <Button onClick={downloadHandler} size="small">Скачать бэкап</Button>
                 {lastBackupText !== '' ? (
-                    <div className='text-xs text-slate-400 mr-1'>Последний бэкап: {lastBackupText}</div>
+                    <div className='text-xs text-slate-400 dark:text-slate-500 mr-1'>Последний бэкап: {lastBackupText}</div>
                 ) : null}
             </div>
 
@@ -75,9 +75,9 @@ export default function Backup() {
                 aria-describedby="alert-reminder-description"
             >
                 <DialogContent>
-                    <div className='text-slate-900 text-center'>{'Кажется, Вы давно не делали бэкап. Сделать его сейчас?'}</div>
+                    <div className='text-slate-900 dark:text-slate-100 text-center'>{'Кажется, Вы давно не делали бэкап. Сделать его сейчас?'}</div>
                     {lastBackupDate !== '' ? (
-                        <div className='text-xs text-gray-500 text-center mt-1'>Последний бэкап: {dayjs(lastBackupDate).format(backupFormat)}</div>
+                        <div className='text-xs text-gray-500 dark:text-gray-400 text-center mt-1'>Последний бэкап: {dayjs(lastBackupDate).format(backupFormat)}</div>
                     ) : null}
                     <div className='text-center mt-7'>
                         <Button onClick={downloadHandler} variant='outlined' color='success'>Скачать бэкап</Button>

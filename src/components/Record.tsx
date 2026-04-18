@@ -47,7 +47,7 @@ const Record = ({ id, price, currency, client, date, reciever, pricePln, exchang
             <TableCell>≈ {currencyFormat(pricePln)}</TableCell>
             <TableCell>
                 {exchangeRate ? exchangeRate : '-'}
-                {exchangeRate ? <div className='text-xs text-slate-400'>от {courseDay()}</div> : ''}
+                {exchangeRate ? <div className='text-xs text-slate-400 dark:text-slate-500'>от {courseDay()}</div> : ''}
             </TableCell>
             <TableCell align='right'>
                 <IconButton

@@ -90,26 +90,26 @@ export default function Limits({ records }: TRecordsEchange) {
             {isQuarter &&
                 <div>
                     <span className='font-medium text-xl'>{quarterTitle}</span>&nbsp;
-                    <span className='text-xs text-slate-600'>({quarterSubtitle})</span>
+                    <span className='text-xs text-slate-600 dark:text-slate-400'>({quarterSubtitle})</span>
                 </div>
             }
-            <div className='text-xs text-slate-600'>Лимит в {isQuarter ? 'квартал' : 'месяц'}: {currencyFormat(limitZl)}&nbsp;
+            <div className='text-xs text-slate-600 dark:text-slate-400'>Лимит в {isQuarter ? 'квартал' : 'месяц'}: {currencyFormat(limitZl)}&nbsp;
                 ≈ {Math.trunc(limitZl / euroCourse)} €
                 ≈ {Math.trunc(limitZl / usdCourse)} $
             </div>
-            <hr className='w-80 h-px mt-1 mb-4 bg-slate-300 border-0 rounded-sm' />
-            <div className='text-sm text-slate-600 mt-4 mb-1'>Остаток лимита:</div>
-            <div className='font-medium text-lg text-slate-600'>
-                <span>Лена:</span> <span className='text-black'>{currencyFormat(lenaLimit)}</span> ≈ <span
-                    className='text-sky-600'>{Math.trunc(lenaLimit / euroCourse)} €</span> ≈ <span
-                    className='text-rose-600'>{Math.trunc(lenaLimit / usdCourse)} $</span>
+            <hr className='w-80 h-px mt-1 mb-4 bg-slate-300 dark:bg-slate-600 border-0 rounded-sm' />
+            <div className='text-sm text-slate-600 dark:text-slate-400 mt-4 mb-1'>Остаток лимита:</div>
+            <div className='font-medium text-lg text-slate-600 dark:text-slate-400'>
+                <span>Лена:</span> <span className='text-black dark:text-white'>{currencyFormat(lenaLimit)}</span> ≈ <span
+                    className='text-sky-600 dark:text-sky-400'>{Math.trunc(lenaLimit / euroCourse)} €</span> ≈ <span
+                    className='text-rose-600 dark:text-rose-400'>{Math.trunc(lenaLimit / usdCourse)} $</span>
             </div>
-            <div className='font-medium text-lg text-slate-600'>
-                <span>Влад:</span> <span className='text-black'>{currencyFormat(vladLimit)}</span> ≈ <span
-                    className='text-sky-600'>{Math.trunc(vladLimit / euroCourse)} €</span> ≈ <span
-                    className='text-rose-600'>{Math.trunc(vladLimit / usdCourse)} $</span>
+            <div className='font-medium text-lg text-slate-600 dark:text-slate-400'>
+                <span>Влад:</span> <span className='text-black dark:text-white'>{currencyFormat(vladLimit)}</span> ≈ <span
+                    className='text-sky-600 dark:text-sky-400'>{Math.trunc(vladLimit / euroCourse)} €</span> ≈ <span
+                    className='text-rose-600 dark:text-rose-400'>{Math.trunc(vladLimit / usdCourse)} $</span>
             </div>
-            <hr className='w-80 h-px mt-1 mb-4 bg-slate-300 border-0 rounded-sm' />
+            <hr className='w-80 h-px mt-1 mb-4 bg-slate-300 dark:bg-slate-600 border-0 rounded-sm' />
             <div className='capitalize font-medium text-lg mt-10 mb-3'>{dayjs().format('MMMM YYYY')}</div>
         </div>
     );

@@ -46,7 +46,7 @@ const Restore: React.FC = () => {
                     Восстановление записей
                 </DialogTitle>
                 <DialogContent>
-                    <ul className='list-decimal pl-5 mb-5 text-gray-500 text-sm'>
+                    <ul className='list-decimal pl-5 mb-5 text-gray-500 dark:text-gray-300 text-sm'>
                         <li>Выбери файл с бэкапом.</li>
                         <li>Файл будет называться как-то так &quot;income_backup_1234567890.txt&quot;.</li>
                         <li>Загрузи файл и бэкап восстановится автоматически.</li>

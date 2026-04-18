@@ -182,11 +182,11 @@ export default function Records() {
                             <span className='ml-2'>
                                 {dayjs(key).format('MMMM YYYY')}
                             </span>
-                            <span className='text-slate-500 ml-5 lowercase text-sm'>
+                            <span className='text-slate-500 dark:text-slate-400 ml-5 lowercase text-sm'>
                                 {currencyFormat(getSumForRecords(recordsByMonth[key]))}
                             </span>
                             {showTrends &&
-                                <span className='text-slate-500 ml-2 lowercase text-xs'>
+                                <span className='text-slate-500 dark:text-slate-400 ml-2 lowercase text-xs'>
                                     <Trend
                                         current={getSumForRecords(recordsByMonth[key])}
                                         previous={getSumForRecords(recordsByMonth[getPreviousDate(dates, key)])}
@@ -245,10 +245,10 @@ export default function Records() {
                                 {currencyFormat(getSumForRecords(recordsByYear[key]))}
                             </span>
                             <div>
-                                <span className='text-slate-600 text-sm'>
+                                <span className='text-slate-600 dark:text-slate-400 text-sm'>
                                     Лена: {currencyFormat(getSumForRecords(recordsByYear[key].filter((item) => item.reciever === 0)))}
                                 </span>
-                                <span className='text-slate-600 text-sm ml-5'>
+                                <span className='text-slate-600 dark:text-slate-400 text-sm ml-5'>
                                     Влад: {currencyFormat(getSumForRecords(recordsByYear[key].filter((item) => item.reciever === 1)))}
                                 </span>
                             </div>
@@ -257,7 +257,7 @@ export default function Records() {
                 </div>
             }
 
-            <div className='px-4 py-2.5 my-20 border-solid border-2 border-slate-50 rounded-md'>
+            <div className='px-4 py-2.5 my-20 border-solid border-2 border-slate-50 dark:border-slate-700 rounded-md'>
                 <div className='font-medium mb-3'>Настройки</div>
                 <FormGroup>
                     <FormControlLabel control={
