@@ -56,7 +56,7 @@ const Record = ({ id, price, currency, client, date, reciever, pricePln, exchang
                     component="label"
                     onClick={() => setDialogOpen(true)}
                 >
-                    <ClearIcon/>
+                    <ClearIcon />
                 </IconButton>
             </TableCell>
 

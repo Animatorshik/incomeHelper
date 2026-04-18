@@ -1,20 +1,28 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import dayjs from 'dayjs';
 import axios from 'axios';
 
 import { getExchangeRateApi } from '../../api/api';
+import { TRecord } from '../../types/records';
+
+type TStatus = 'ok' | 'loading';
+
+type TRecordsState = {
+    status: TStatus;
+    data: TRecord[];
+};
 
 const lsKey = 'trackerData';
 const lsData = localStorage.getItem(lsKey);
 
-const initialState = {
+const initialState: TRecordsState = {
     status: 'ok',
     data: [],
 };
 
 export const addRecordAsync = createAsyncThunk(
     'records/getExchangeRate',
-    async (data) => {
+    async (data: TRecord) => {
         const currency = data.currency;
         if (currency !== 'pln') {
             // Need to get the Exchange Rate for the one working day
@@ -30,8 +38,7 @@ export const addRecordAsync = createAsyncThunk(
                     response = await getExchangeRateApi(currency);
                 }
             }
-            // const response = await getExchangeRateApi(currency);
-            const exchangeRate = response.data.rates[0].mid;
+            const exchangeRate = response!.data.rates[0].mid;
             return { ...data, pricePln: data.price * exchangeRate, exchangeRate };
         } else {
             return { ...data, pricePln: Number(data.price) };
@@ -41,21 +48,19 @@ export const addRecordAsync = createAsyncThunk(
 
 export const recordsSlice = createSlice({
     name: 'records',
-    initialState: lsData ? JSON.parse(lsData) : initialState,
+    initialState: (lsData ? JSON.parse(lsData) : initialState) as TRecordsState,
     reducers: {
-        addRecord: (state, action) => {
+        addRecord: (state, action: PayloadAction<TRecord>) => {
             state.data.push(action.payload);
             localStorage.setItem(lsKey, JSON.stringify(state));
         },
-        removeRecord: (state, action) => {
+        removeRecord: (state, action: PayloadAction<string>) => {
             state.data.splice(state.data.findIndex((record) => record.id === action.payload), 1);
             localStorage.setItem(lsKey, JSON.stringify(state));
         },
-        updateRecords: (state, action) => {
-            // const lsData = JSON.parse(localStorage.getItem(lsKey));
-            // state.data = lsData.data;
+        updateRecords: (state, action: PayloadAction<TRecord[]>) => {
             state.data = action.payload;
-        }
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -76,7 +81,7 @@ export const recordsSlice = createSlice({
 
 export const { addRecord, removeRecord, updateRecords } = recordsSlice.actions;
 
-export const selectRecords = (state) => state.records.data;
-export const selectStatus = (state) => state.records.status;
+export const selectRecords = (state: { records: TRecordsState }) => state.records.data;
+export const selectStatus = (state: { records: TRecordsState }) => state.records.status;
 
 export default recordsSlice.reducer;

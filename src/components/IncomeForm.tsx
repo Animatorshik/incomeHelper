@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 
 import { addRecordAsync, selectRecords, selectStatus } from '../features/records/recordsSlice';
+import { AppDispatch } from '../app/store';
 
 import NumericFormatCustom from '../helpers/NumericFormatCustom';
 
@@ -40,7 +41,7 @@ const getClientsArray = (records: TRecord[]) => {
 export default function IncomeForm() {
     const satus = useSelector(selectStatus);
     const records: TRecord[] = useSelector(selectRecords);
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
 
     const [price, setPrice] = useState('');
     const [currency, setCurrency] = useState<TCurrencyAll>('eur');

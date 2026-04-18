@@ -100,7 +100,7 @@ const getPreviousDate = (dates: string[], date: string): TPreviousDate => {
 };
 
 export default function Records() {
-    const records = useSelector<TRecord[]>(selectRecords);
+    const records = useSelector(selectRecords);
     const [recordsByMonth, setRecordsByMonth] = useState<TSortedRecords>({});
     const [recordsByQuarter, setRecordsByQuarter] = useState<TSortedRecords>({});
     const [recordsByYear, setRecordsByYear] = useState<TSortedRecords>({});

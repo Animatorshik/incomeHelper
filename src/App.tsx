@@ -10,15 +10,15 @@ export default function App() {
     return (
         <>
             <div className='flex justify-between p-3'>
-                <Restore/>
-                <Backup/>
+                <Restore />
+                <Backup />
             </div>
             <div className='container max-w-4xl mx-auto my-8 md:my-20 px-5'>
-                <IncomeForm/>
-                <Records/>
+                <IncomeForm />
+                <Records />
             </div>
             <div className='my-5 text-center'>
-                <RefreshPage/>
+                <RefreshPage />
             </div>
         </>
     );
